@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ada Pesan Untukmu! 🎁</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FFE5EC 0%, #FFC2D1 100%);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        .card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 450px;
+            width: 90%;
+            border: 2px solid #FFB3C6;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #FF4D6D;
+            font-size: 2.3rem;
+            margin-bottom: 20px;
+        }
+        p {
+            color: #495057;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        .icon {
+            font-size: 4.5rem;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 12px 20px;
+            margin: 20px 0;
+            box-sizing: border-box;
+            border: 2px solid #FFB3C6;
+            border-radius: 50px;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: #FF4D6D;
+        }
+        button {
+            background-color: #FF4D6D;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #C9184A;
+            transform: scale(1.05);
+        }
+        .nama-target {
+            color: #C9184A;
+            font-weight: bold;
+            font-size: 1.8rem;
+            display: block;
+            margin-top: 5px;
+        }
+        .hidden {
+            display: none;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .animated-icon {
+            animation: bounce 2s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="halaman-input" class="card">
+        <div class="icon">🎁</div>
+        <h1>Halo! Siapa namamu?</h1>
+        <p>Ketik namamu di bawah ini untuk membuka pesan rahasia</p>
+        
+        <form id="form-nama">
+            <input type="text" id="input-nama" placeholder="Masukkan nama kamu di sini..." required autocomplete="off">
+            <br>
+            <button type="submit" id="btn-submit">Buka Ucapan ✨</button>
+        </form>
+    </div>
+
+    <div id="halaman-utama" class="card hidden">
+        <div class="icon animated-icon">🎂</div>
+        <h1>Selamat Ulang Tahun, <span id="nama-pengunjung" class="nama-target">Kamu</span>!</h1>
+        <p>Semoga di usia yang baru ini, setiap langkahmu dituntun menuju kebahagiaan, kesehatan, dan kesuksesan yang berlimpah.</p>
+        <p>Semoga hari ini menjadi awal dari tahun yang luar biasa! 🎈✨</p>
+    </div>
+
+    <script>
+        const form = document.getElementById('form-nama');
+        const halamanInput = document.getElementById('halaman-input');
+        const halamanUtama = document.getElementById('halaman-utama');
+        const namaPengunjung = document.getElementById('nama-pengunjung');
+        const btnSubmit = document.getElementById('btn-submit');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const namaKetik = document.getElementById('input-nama').value;
+            btnSubmit.innerText = "Memproses... ⏳";
+            btnSubmit.disabled = true;
+
+            const waktuSekarang = new Date().toLocaleString("id-ID");
+
+            // URL Google Web App milikmu
+            const URL_GOOGLE_SCRIPT = "https://script.google.com/macros/s/AKfycbx66pOADc4wVmA8Khu-K42diA8gcdzUeKKDJHH2rjNGKz2CfZAfcTSxJALpDPOo49Wv2A/exec"; 
+
+            // Pengunci 'if' sudah dihapus, data langsung dipaksa kirim tanpa syarat!
+            fetch(URL_GOOGLE_SCRIPT, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nama: namaKetik, waktu: waktuSekarang })
+            })
+            .then(() => console.log("Data terkirim ke latar belakang."))
+            .catch(err => console.log("Error kirim data:", err));
+
+            // Animasi perpindahan halaman ucapan
+            setTimeout(() => {
+                namaPengunjung.innerText = namaKetik;
+                halamanInput.classList.add('hidden');
+                halamanUtama.classList.remove('hidden');
+            }, 800); 
+        });
+    </script>
+</body>
+</html>
