@@ -86,6 +86,18 @@
         .animated-icon {
             animation: bounce 2s infinite;
         }
+        /* Efek Animasi Kedap-Kedip Merah Putih */
+        @keyframes flashEfek {
+            0% { background: #000000; opacity: 0.3; }
+            25% { background: #ffffff; opacity: 1; }
+            50% { background: #000000; opacity: 0.3; }
+            75% { background: #ffffff; opacity: 1; }
+            100% { background: linear-gradient(135deg, #FFE5EC 0%, #e65c5c 100%); }
+        }
+
+        .screen-flash {
+            animation: flashEfek 0.4s ease-in-out;
+        }
     </style>
 </head>
 <body>
@@ -122,6 +134,14 @@
             const namaKetik = document.getElementById('input-nama').value;
             btnSubmit.innerText = "Memproses... ⏳";
             btnSubmit.disabled = true;
+
+            // --- TAMBAHKAN KODE INI UNTUK MEMBUAT LAYAR KEDAP KEDIP ---
+            document.body.classList.add('screen-flash');
+            // Hapus class setelah animasi selesai agar tidak mengganggu tampilan berikutnya
+            setTimeout(() => {
+                document.body.classList.remove('screen-flash');
+            }, 400);
+            // ---------------------------------------------------------
 
             const waktuSekarang = new Date().toLocaleString("id-ID");
 
